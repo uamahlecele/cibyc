@@ -1,10 +1,13 @@
 
-// fetch("http://192.168.1.2:8080/ccapi/ver100/shooting/liveview", {
-//     method: 'POST', body: JSON.stringify({ 'liveviewsize': 'small', 'cameradisplay': 'on' })
-// })
+async function establishConnection() {
+    const response = await fetch("http://192.168.1.2:8080/ccapi")
 
-//     .then(response => fetch("http://192.168.1.2:8080/ccapi/ver100/shooting/liveview"))
-
+    if (!response.ok) {
+        throw new Error("Could not connect to Camera");
+    } else {
+        console.log("Connection to Camera established! :)")
+    }
+}
 async function cameraLiveView() {
 
     const data = await fetch("http://192.168.1.2:8080/ccapi/ver100/shooting/liveview", {
