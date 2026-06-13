@@ -5,14 +5,22 @@
 
 //     .then(response => fetch("http://192.168.1.2:8080/ccapi/ver100/shooting/liveview"))
 
-async function testing() {
+async function cameraLiveView() {
 
-    const data = await fetch("https://pokeapi.co/api/v2/pokemon/pikachu")
-    const dataJ = await data.json()
+    const data = await fetch("http://192.168.1.2:8080/ccapi/ver100/shooting/liveview", {
+        method: 'POST', body: {
+            'liveviewsize': 'small',
+            'cameradisplay': 'small'
+        }
+    })
 
-    // console.log("THIS IS WHAT THE DATA LOOKS LIKE: " + dataJ)
+    const response = await data.json()
 
-    document.getElementById('testingAPI').src = dataJ.sprites.front_female
+    console.log("THIS IS WHAT THE DATA LOOKS LIKE: " + response)
+
+    document.getElementById('testingAPI').src = dataJ
 }
 
 // const result = document.getElementById('testingAPI').textContent = data
+
+module.exports = cameraLiveView;
