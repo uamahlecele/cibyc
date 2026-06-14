@@ -10,18 +10,22 @@ async function establishConnection() {
 }
 async function cameraLiveView() {
 
-    const data = await fetch("http://192.168.1.2:8080/ccapi/ver100/shooting/liveview", {
+    const dataLi = await fetch("http://192.168.1.2:8080/ccapi/ver100/shooting/liveview", {
         method: 'POST', body: {
             'liveviewsize': 'small',
             'cameradisplay': 'small'
         }
     })
 
+    const imageTag = document.getElementById('liveView');
+
+    const data = await fetch("http://192.168.1.2:8080/ccapi/ver100/shooting/liveview/flip")
+
     const response = await data.json()
 
     console.log("THIS IS WHAT THE DATA LOOKS LIKE: " + response)
 
-    document.getElementById('testingAPI').src = dataJ
+    imageTag.src = data
 }
 
 // const result = document.getElementById('testingAPI').textContent = data
