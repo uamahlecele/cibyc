@@ -9,24 +9,36 @@
 
 <body>
 
-    <h1>Camera Feed</h1>
+    <style>
+        .hover-btn {
+            cursor: pointer;
+        }
+    </style>
 
-    <img id="liveView">
+    <h1 style="text-align: center;">Camera Feed</h1>
+
+    <!-- Liveview image component -->
+
+    <img id="displayImageFromCamera">
+
+    <div style="text-align: center;">
+
+        <button class="hover-btn" onClick="establishConnection()"> Establish Connection </button>
+        <button class="hover-btn" type="button" onClick="cameraLiveView()"> Create Live View </button>
+        <button class="hover-btn" type="button" onClick="downloadImage()"> Save Image</button>
 
 
-    <!-- <p> http://192.168.1.2:8080/ccapi</p> -->
-
-    <button onClick="establishConnection()"> Establish Connection </button>
-
+    </div>
+    <br>
+    <br>
+    <br>
 
     <div class="live-feed">
         <!-- API call to the part of the canon api that will deal with getting the camera view -->
     </div>
 
-    <h1>Gallery</h1>
+    <div>
 
-    <div class="gallery">
-        <button type="button" onclick="cameraLiveView()">Live View</button>
 
     </div>
 
