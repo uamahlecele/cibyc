@@ -2,23 +2,14 @@ const express = require('express')
 const http = require('http')
 
 const app = express()
-// const cors = require('cors')
 const liveView = require('./app.js');
 
-// app.use(cors())
 
-// http
-//     .post('http://192.168.1.2:8080/ccapi/ver100/shooting/liveview', {
-//         method: 'POST', body: {
-//             'liveviewsize': 'small',
-//             'cameradisplay': 'on'
-//         }
-//     })
-
-app.listen(8000, () => {
-    console.log('Running on port 8000')
+app.listen(8080, () => {
+    console.log('Running on port 8080')
 })
 
+app.use(express.json({ limit: '1mb' }))
 
 app.get('/connect', async (req, res) => {
     const response = await fetch("http://192.168.1.2:8080/ccapi")
@@ -33,11 +24,7 @@ app.get('/connect', async (req, res) => {
 })
 
 app.post('/liveview', async (req, res) => {
-    await fetch('http://192.168.1.2:8080/ccapi/ver100/shooting/liveview', {
-        method: 'POST', body: {
-            'liveviewsize': 'small',
-            'cameradisplay': 'on'
-        }
-    })
+    console.log('This is a request from my button to get liveview')
+    console.log(req.body)
 
 })
