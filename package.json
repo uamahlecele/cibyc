@@ -1,0 +1,23 @@
+{
+  "name": "cibyc",
+  "version": "1.0.0",
+  "description": "Remote viewing and operating on camera remotely utilising the Canon Connect API (CCAPI).",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "concurrently \"npm run watch:server\" \"npm run watch:css\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uamahlecele/cibyc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/uamahlecele/cibyc/issues"
+  },
+  "homepage": "https://github.com/uamahlecele/cibyc#readme"
+}

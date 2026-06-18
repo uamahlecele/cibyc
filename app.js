@@ -1,7 +1,10 @@
+const PROXY_URL = "http://localhost:8080";
 
 async function establishConnection() {
 
-    const response = await fetch("http://localhost:8000/connect")
+    const response = await fetch(`${PROXY_URL}/connect`)
+
+    console.log("WE GOTTT", response);
 }
 
 // async function cameraLiveView() {
@@ -10,19 +13,17 @@ async function establishConnection() {
 
 //     const liveView = await fetch("http://localhost:8000/liveview");
 
-
 // }
 
 
 async function cameraLiveView() {
 
-    const response = fetch('/liveview', {
+    // const response = await fetch('/liveview')
+    const response = await fetch("/liveview", {
         method: 'POST',
-        body: {
-            "liveviewsize": "small",
-            "cameradisplay": "on"
-        }
+
     })
+    console.log(response)
 
 
     // const response = await data.json()
@@ -54,4 +55,4 @@ async function cameraLiveView() {
 
 // const result = document.getElementById('testingAPI').textContent = data
 
-module.exports = cameraLiveView;
+// module.exports = cameraLiveView;
