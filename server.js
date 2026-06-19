@@ -10,7 +10,6 @@ const app = express()
 const CAMERA_IP = "http://192.168.1.2:8080";
 
 
-
 app.listen(8080, () => {
     console.log('Running on port 8080')
 })
@@ -24,9 +23,22 @@ app.get('/connect', async (req, res) => {
     if (!response.ok) {
         throw new Error("Could not connect to Camera");
     } else {
-        // console.log("Connection to Camera established! :)")
         res.send("Connection to Camera established! :)")
     }
+
+})
+
+app.get('/deviceinfo', async (req, res) => {
+
+    const data = await fetch(`${CAMERA_IP}/ccapi/ver100/deviceinformation`) // This downloads the resulting response in chunks, hence the await, until done
+    const formatData = await data.json() // this converts the data into json, also in chunks. Essentially downloading them
+
+    if (!data.ok) {
+        throw new Error("Could not get device info");
+    } else {
+        res.json(formatData) // res.json forces formData to be formatted in json compared to res.send() where it would have to guess the format
+    }
+
 
 })
 

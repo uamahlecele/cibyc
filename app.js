@@ -15,6 +15,16 @@ async function establishConnection() {
 
 // }
 
+async function deviceInformation() {
+    const data = await fetch(`${PROXY_URL}/deviceinfo`)
+    const resJSON = await data.json()  //unpacks the JSON
+
+    const productName = document.getElementById("deviceInfo").textContent = JSON.stringify(resJSON.productname)
+    const manufacturer = document.getElementById("manu").textContent = JSON.stringify(resJSON.manufacturer)
+
+    console.log("This is the deviceinfo ", data)
+
+}
 
 async function cameraLiveView() {
 
