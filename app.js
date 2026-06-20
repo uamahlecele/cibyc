@@ -43,6 +43,10 @@ async function cameraLiveView() {
     // const formatToJSON = await dataFromAPI.json()
     // document.getElementById
 }
-// const result = document.getElementById('testingAPI').textContent = data
 
-// module.exports = cameraLiveView;
+async function shoot() {
+    let data = await fetch(`${PROXY_URL}/shoot`)
+    const formatData = data.json()
+
+    console.log("Took an image!")
+}

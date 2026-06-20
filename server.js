@@ -64,15 +64,28 @@ app.get('/setup', async (req, res) => {
 
     // }
 
-
-
 })
 
 app.get('/liveview', async (req, res) => {
     const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview/flip`)
-    // const formatToImage = await dataFromAPI.blob();
-    const buffer = await dataFromAPI.arrayBuffer();
-    res.set('Content-Type', 'image/jpeg');
-    res.send(Buffer.from(buffer));
+    // const formatToImage = await dataFromAPI.blob(); // blob is an object that represents immutable, raw binary data
 
+    const buffer = await dataFromAPI.arrayBuffer(); // An ArrayBuffer is essentially a fixed-length chunk of memory used to store raw binary data (just 1s and 0s).
+    //  It is the best way to handle non-text data like images, audio, or video files in JavaScript.
+    res.set('Content-Type', 'image/jpeg'); // .set() allows you to specify the header of the response object
+    res.send(Buffer.from(buffer)); // creates a copy of the buffer object
+
+})
+
+app.get('/shoot', async (req, res) => {
+    const data = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/control/shutterbutton`, {
+        method: 'POST',
+        header: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            "af": true
+        })
+    })
+
+    const formatData = await data.json()
+    res.json(formatData)
 })
