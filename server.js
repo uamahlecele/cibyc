@@ -42,7 +42,7 @@ app.get('/deviceinfo', async (req, res) => {
 
 })
 
-app.get('/liveview', async (req, res) => {
+app.get('/setup', async (req, res) => {
     // const response = await fetch("http://192.168.1.2:8080/ccapi/liveview", {
     const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview`
         , {
@@ -63,5 +63,16 @@ app.get('/liveview', async (req, res) => {
     // } else {
 
     // }
+
+
+
+})
+
+app.get('/liveview', async (req, res) => {
+    const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview/flip`)
+    // const formatToImage = await dataFromAPI.blob();
+    const buffer = await dataFromAPI.arrayBuffer();
+    res.set('Content-Type', 'image/jpeg');
+    res.send(Buffer.from(buffer));
 
 })
