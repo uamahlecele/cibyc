@@ -44,26 +44,24 @@ app.get('/deviceinfo', async (req, res) => {
 
 app.get('/liveview', async (req, res) => {
     // const response = await fetch("http://192.168.1.2:8080/ccapi/liveview", {
-    const response = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview`);
-    // , {
-    //     method: 'POST',
-    //     body: {
-    //         "liveviewsize": "small",
-    //         "cameradisplay": "on"
-    //     },
-    //     headers: { "Content-Type": "application/json" }
+    const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview`
+        , {
+            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            body: JSON.stringify({
+                "liveviewsize": "small",
+                "cameradisplay": "on"
+            }),
+        })
 
-    // })
+    const formatData = await dataFromAPI.json()
 
-    if (!response.ok) {
-        return res.status(response.status).send("Failed to fetch live view frame from camera");
-    }
+    res.json(formatData)
 
+    // if (!response.ok) {
+    //     return res.status(response.status).send("Failed to fetch live view frame from camera");
+    // } else {
 
-
-    res.send(console.log("!!!!!!!!!!"), response)
-
-
-    // console.log(req.body)
+    // }
 
 })

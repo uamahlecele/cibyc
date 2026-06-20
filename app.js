@@ -29,11 +29,12 @@ async function deviceInformation() {
 async function cameraLiveView() {
 
     // const response = await fetch('/liveview')
-    const response = await fetch("/liveview", {
-        method: 'POST',
+    const dataFromAPICall = await fetch(`${PROXY_URL}/liveview`)
+    const formatToJSON = await dataFromAPICall.json()
 
-    })
-    console.log(response)
+    const paragraphDisplay = document.getElementById("displayImageFromCamera").textContent = JSON.stringify(formatToJSON)
+
+
 
 
     // const response = await data.json()
