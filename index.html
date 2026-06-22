@@ -10,24 +10,34 @@
 <body>
 
     <style>
+        .cameraFrame {
+            border-radius: 15px;
+        }
+
         body {
             font-family: poppins;
             font-weight: 100;
+            background-color: #F7F1DE;
         }
 
         .hover-btn {
             cursor: pointer;
+            border: none;
+            border-radius: 5px;
         }
     </style>
 
-    <h1 style="text-align: center;">Camera Feed</h1>
+    <h2 style="text-align: center;">Camera Feed</h2>
 
     <!-- Liveview image component -->
 
-    <img id="displayImageFromCamera">
+    <div style="text-align: center;">
+
+        <img class="cameraFrame" id="displayImageFromCamera">
+    </div>
 
     <!-- <p id="displayImageFromCamera"></p> -->
-
+    <br>
     <div style="text-align: center;">
 
         <button class="hover-btn" type="button" onClick="establishConnection()"> Establish Connection </button>
@@ -44,8 +54,8 @@
     <h2>Camera details</h2>
 
     <div class="deviceSpecs">
-        <h4 id="deviceInfo"></h4>
-        <h4 id="manu"></h4>
+        <li id="deviceInfo"></li>
+        <li id="manu"></li>
 
     </div>
 

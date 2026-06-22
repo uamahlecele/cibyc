@@ -73,6 +73,7 @@ app.get('/liveview', async (req, res) => {
     const buffer = await dataFromAPI.arrayBuffer(); // An ArrayBuffer is essentially a fixed-length chunk of memory used to store raw binary data (just 1s and 0s).
     //  It is the best way to handle non-text data like images, audio, or video files in JavaScript.
     res.set('Content-Type', 'image/jpeg'); // .set() allows you to specify the header of the response object
+    res.set('Transfer-Encoding', 'chunked');
     res.send(Buffer.from(buffer)); // creates a copy of the buffer object
 
 })
