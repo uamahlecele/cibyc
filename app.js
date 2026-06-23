@@ -40,9 +40,16 @@ async function cameraLiveView() {
     imgElement.src = localUrl
 
 
+    // setTimeout(cameraLiveView, 2000)
+
+
     // const formatToJSON = await dataFromAPI.json()
     // document.getElementById
 }
+
+// This calls the api every 1 second, essentially polling. But I'm noticing a lag! But this is dope!!!!!!
+const interval = setInterval(cameraLiveView, 1000);
+
 
 async function shoot() {
     let data = await fetch(`${PROXY_URL}/shoot`)
