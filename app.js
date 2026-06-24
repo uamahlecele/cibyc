@@ -55,5 +55,27 @@ async function shoot() {
     let data = await fetch(`${PROXY_URL}/shoot`)
     const formatData = data.json()
 
+
+
     console.log("Took an image!")
+}
+
+
+async function downloadImage() {
+    const data = await fetch(`${PROXY_URL}/ccapi/ver100/event/polling?continue=on`)
+    const formatJSON = await data.json()
+
+
+    // CALLS IMAGE STRING LOCATION DIRECTLY
+    const urlOfRecentImage = await fetch(formatJSON.addedcontents)
+    // const blob = await urlOfRecentImage.blob()
+
+    // STORE BLOB IMAGE
+
+    // let localUrl = URL.createObjectURL(blob)
+
+
+
+
+
 }
