@@ -5,7 +5,6 @@ const http = require('http')
 const cors = require("cors")
 
 const app = express()
-// const liveView = require('./app.js');
 
 const CAMERA_IP = "http://192.168.1.2:8080";
 
