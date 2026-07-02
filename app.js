@@ -3,6 +3,8 @@ const PROXY_URL = "http://localhost:8080";
 async function establishConnection() {
 
     const response = await fetch(`${PROXY_URL}/connect`)
+    let dataPoll = await fetch(`${PROXY_URL}/save`)
+
 
     console.log("WE GOTTT", response);
 }
@@ -53,6 +55,7 @@ const interval = setInterval(cameraLiveView, 1000);
 
 async function shoot() {
     let data = await fetch(`${PROXY_URL}/shoot`)
+
     // const formatData = data.json()
     let download = createElement('a');
 

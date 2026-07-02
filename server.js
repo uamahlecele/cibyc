@@ -1,4 +1,5 @@
 const express = require('express')
+const fs = require('fs')
 const http = require('http')
 
 // REMEMBER THIS FOR CORS
@@ -11,6 +12,26 @@ const CAMERA_IP = "http://192.168.1.2:8080";
 // const DIRECTORY = "";
 
 
+async function createlongPoll() {
+    const data = await fetch(`${CAMERA_IP}/event/polling`)
+    const responseJson = await data.json()
+
+    if (responseJson.addedcontents) {
+
+        const recentImageUrl = responseJson.addedcontents[0];
+        const imageResponse = await fetch(recentImageUrl)
+
+        const arrayBuffer = await imageResponse.arrayBuffer()
+        const buffer = Buffer.from(arrayBuffer)
+        fs.writeFileSync('./images/photo.jpg', buffer)
+
+
+    }
+
+    createlongPoll()
+
+
+}
 
 app.listen(8080, () => {
     console.log('Running on port 8080')
@@ -43,6 +64,14 @@ app.get('/deviceinfo', async (req, res) => {
 
 
 })
+
+// app.get('/save', async (req, res) => {
+
+//     const data = await fetch(`${CAMERA_IP}/event/polling[?continue]`)
+
+//     const jsonData = await data.json()
+
+// })
 
 app.get('/setup', async (req, res) => {
     // const response = await fetch("http://192.168.1.2:8080/ccapi/liveview", {
@@ -88,13 +117,8 @@ app.get('/shoot', async (req, res) => {
         })
     })
 
-    const polled = await fetch(`${CAMERA_IP}/ccapi/ver100/event/polling?continue=on`);
-    const savePolled = await polled.json();
+    res.send(data);
 
-    const latestImageURL = savePolled.addedContents[0]
-    res.send(latestImageURL);
-
-    // const save = await fetch(`${CAMERA_IP}/ccapi/ver100/contents/`)
-    // const formatData = await data.json()
-    // res.json(formatData)
 })
+
+createlongPoll()
