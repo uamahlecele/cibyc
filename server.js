@@ -7,6 +7,9 @@ const cors = require("cors")
 const app = express()
 
 const CAMERA_IP = "http://192.168.1.2:8080";
+// const STORAGE = "";
+// const DIRECTORY = "";
+
 
 
 app.listen(8080, () => {
@@ -67,7 +70,6 @@ app.get('/setup', async (req, res) => {
 
 app.get('/liveview', async (req, res) => {
     const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview/flip`)
-    // const formatToImage = await dataFromAPI.blob(); // blob is an object that represents immutable, raw binary data
 
     const buffer = await dataFromAPI.arrayBuffer(); // An ArrayBuffer is essentially a fixed-length chunk of memory used to store raw binary data (just 1s and 0s).
     //  It is the best way to handle non-text data like images, audio, or video files in JavaScript.
@@ -86,6 +88,13 @@ app.get('/shoot', async (req, res) => {
         })
     })
 
-    const formatData = await data.json()
-    res.json(formatData)
+    const polled = await fetch(`${CAMERA_IP}/ccapi/ver100/event/polling?continue=on`);
+    const savePolled = await polled.json();
+
+    const latestImageURL = savePolled.addedContents[0]
+    res.send(latestImageURL);
+
+    // const save = await fetch(`${CAMERA_IP}/ccapi/ver100/contents/`)
+    // const formatData = await data.json()
+    // res.json(formatData)
 })

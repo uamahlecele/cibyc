@@ -9,11 +9,11 @@ async function establishConnection() {
 
 async function deviceInformation() {
     const data = await fetch(`${PROXY_URL}/deviceinfo`)
-    const resJSON = await data.json()  //unpacks the JSON
+    const resJSON = await data.json()  // unpacks the JSON
 
     const productName = document.getElementById("deviceInfo").textContent = JSON.stringify(resJSON.productname)
     const manufacturer = document.getElementById("manu").textContent = JSON.stringify(resJSON.manufacturer)
-
+    const displayHeading = document.getElementById("heading").textContent = "Camera details"
     console.log("This is the deviceinfo ", data)
 
 }
@@ -53,9 +53,10 @@ const interval = setInterval(cameraLiveView, 1000);
 
 async function shoot() {
     let data = await fetch(`${PROXY_URL}/shoot`)
-    const formatData = data.json()
+    // const formatData = data.json()
+    let download = createElement('a');
 
-
+    download.href = data;
 
     console.log("Took an image!")
 }
@@ -68,14 +69,13 @@ async function downloadImage() {
 
     // CALLS IMAGE STRING LOCATION DIRECTLY
     const urlOfRecentImage = await fetch(formatJSON.addedcontents)
+
+    console.log(urlOfRecentImage)
     // const blob = await urlOfRecentImage.blob()
 
     // STORE BLOB IMAGE
 
     // let localUrl = URL.createObjectURL(blob)
-
-
-
 
 
 }
