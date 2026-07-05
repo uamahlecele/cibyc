@@ -1,5 +1,5 @@
 const express = require('express')
-const fs = require('fs')
+const fs = require('fs') // 
 const http = require('http')
 
 // REMEMBER THIS FOR CORS
@@ -13,9 +13,13 @@ const CAMERA_IP = "http://192.168.1.2:8080";
 
 app.listen(8080, () => {
     console.log('Running on port 8080')
+
+    // Keep Calling my long poll api call
+    storeImagesLocally()
 })
 
 app.use(cors())
+
 app.use(express.json({ limit: '1mb' }))
 
 app.get('/connect', async (req, res) => {
@@ -100,6 +104,38 @@ app.get('/shoot', async (req, res) => {
     res.send(data);
 
 })
+
+async function storeImagesLocally() {
+
+    try {
+        const data = await fetch(`${CAMERA_IP}/ccapi/ver100/event/polling?continue=on`);
+
+        if (!data.ok) {
+            throw new Error(`Camera polling failed`);
+        }
+
+        const changeRecorded = await data.json();
+
+        if (changeRecorded.addedcontents && changeRecorded.addedcontents.length > 0) {
+            const recentImageUrl = changeRecorded.addedcontents[0];
+            const imageName = recentImageUrl.split("/")
+            const image = await fetch(`${recentImageUrl}`);
+
+
+            const arrayBuffer = await image.arrayBuffer()
+            const buffer = Buffer.from(arrayBuffer)
+            fs.writeFileSync(`./images/${imageName.at(-1)}`, buffer)
+
+
+        }
+    } catch (error) {
+        console.error("Polling error: ", error.message);
+
+        await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+
+    storeImagesLocally();
+}
 
 // async function createlongPoll() {
 //     const data = await fetch(`${CAMERA_IP}/event/polling`)
