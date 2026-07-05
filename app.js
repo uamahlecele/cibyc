@@ -13,7 +13,7 @@ async function deviceInformation() {
     const data = await fetch(`${PROXY_URL}/deviceinfo`)
     const resJSON = await data.json()  // unpacks the JSON
 
-    const productName = document.getElementById("deviceInfo").textContent = JSON.stringify(resJSON.productname)
+    const productName = document.getElementById("deviceInfo").textContent = JSON.stringify(resJSON)
     const manufacturer = document.getElementById("manu").textContent = JSON.stringify(resJSON.manufacturer)
     const displayHeading = document.getElementById("heading").textContent = "Camera details"
     console.log("This is the deviceinfo ", data)
@@ -66,14 +66,15 @@ async function shoot() {
 
 
 async function downloadImage() {
-    const data = await fetch(`${PROXY_URL}/ccapi/ver100/event/polling?continue=on`)
-    const formatJSON = await data.json()
+    let data = await fetch(`${PROXY_URL}/showimages`);
+    let formatJSON = await data.json();
+
+    console.log(formatJSON);
 
 
     // CALLS IMAGE STRING LOCATION DIRECTLY
-    const urlOfRecentImage = await fetch(formatJSON.addedcontents)
+    // const urlOfRecentImage = await fetch(formatJSON.addedcontents)
 
-    console.log(urlOfRecentImage)
     // const blob = await urlOfRecentImage.blob()
 
     // STORE BLOB IMAGE
