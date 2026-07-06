@@ -31,26 +31,26 @@ async function setup() {
 }
 
 
-async function cameraLiveView() {
+// async function cameraLiveView() {
 
-    let imgElement = document.getElementById("displayImageFromCamera")
+//     let imgElement = document.getElementById("displayImageFromCamera")
 
-    let dataFromAPI = await fetch(`${PROXY_URL}/liveview`)
-    let blob = await dataFromAPI.blob()
-    let localUrl = URL.createObjectURL(blob)
+//     let dataFromAPI = await fetch(`${PROXY_URL}/liveview`)
+//     let blob = await dataFromAPI.blob()
+//     let localUrl = URL.createObjectURL(blob)
 
-    imgElement.src = localUrl
-
-
-    // setTimeout(cameraLiveView, 2000)
+//     imgElement.src = localUrl
 
 
-    // const formatToJSON = await dataFromAPI.json()
-    // document.getElementById
-}
+//     // setTimeout(cameraLiveView, 2000)
+
+
+//     // const formatToJSON = await dataFromAPI.json()
+//     // document.getElementById
+// }
 
 // This calls the api every 1 second, essentially polling. But I'm noticing a lag! But this is dope!!!!!!
-const interval = setInterval(cameraLiveView, 1000);
+// const interval = setInterval(cameraLiveView, 1000);
 
 
 async function shoot() {
