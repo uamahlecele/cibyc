@@ -1,13 +1,83 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cibyc</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cibyc</title>
+</head>
+
+<body>
+  <style>
+    .cameraFrame {
+      border-radius: 30px;
+    }
+
+    body {
+      font-family: poppins;
+      font-weight: 100;
+      background-color: #F7F1DE;
+    }
+
+    .hover-btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+
+  <h1>CIBYC</h1>
+  <h2 style="text-align: center;">Camera Feed</h2>
+
+  <!-- Liveview image component -->
+
+  <div style="text-align: center;">
+
+    <img class="cameraFrame" id="displayImageFromCamera">
+  </div>
+
+  <!-- <p id="displayImageFromCamera"></p> -->
+  <br>
+  <div style="text-align: center;">
+
+    <button class="hover-btn" type="button" onClick="establishConnection()"> Establish Connection </button>
+    <button class="hover-btn" type="button" onClick="setup()"> Setup Live View </button>
+    <button class="hover-btn" type="button" onClick="cameraLiveView()"> Live View </button>
+    <button class="hover-btn" type="button" onClick="downloadImage()"> Save Image</button>
+    <button class="hover-btn" type="button" onClick="deviceInformation()"> Device Information</button>
+    <button class="hover-btn" type="button" onClick="shoot()"> Shoot </button>
+
+
+  </div>
+
+  <h2 id="heading"></h2>
+
+  <div class="deviceSpecs">
+    <li id="deviceInfo"></li>
+    <li id="manu"></li>
+
+  </div>
+
+
+  <br>
+  <br>
+  <br>
+
+  <div class="live-feed">
+    <!-- API call to the part of the canon api that will deal with getting the camera view -->
+  </div>
+
+  <div>
+
+
+  </div>
+
+  <!-- ***GET CONTENTS LIST [GALLERY]: GET ./ccapi/ver100/contents -->
+  <script src="app.js"></script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+
 </html>
