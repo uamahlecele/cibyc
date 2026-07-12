@@ -14,7 +14,7 @@ app.use(cors())
 app.listen(8080, () => {
     console.log('Running on port 8080')
 
-    // Keep Calling my long poll api call
+    // Start listening to any changes soon as the server starts
     storeImagesLocally()
 })
 

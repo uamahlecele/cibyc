@@ -2,11 +2,17 @@ const PROXY_URL = "http://localhost:8080";
 
 async function establishConnection() {
 
-    const response = await fetch(`${PROXY_URL}/connect`)
-    let dataPoll = await fetch(`${PROXY_URL}/save`)
+    try {
+        const response = await fetch(`${PROXY_URL}/connect`)
 
+        if (!response) {
+            throw new error("Could not establish connection");
+        }
 
-    console.log("WE GOTTT", response);
+    } catch (error) {
+        console.log("Could not establish connection", error.message);
+
+    }
 }
 
 async function deviceInformation() {
@@ -30,7 +36,6 @@ async function setup() {
 
 }
 
-
 // async function cameraLiveView() {
 
 //     let imgElement = document.getElementById("displayImageFromCamera")
@@ -50,8 +55,8 @@ async function setup() {
 // }
 
 // This calls the api every 1 second, essentially polling. But I'm noticing a lag! But this is dope!!!!!!
-// const interval = setInterval(cameraLiveView, 1000);
 
+// const interval = setInterval(cameraLiveView, 1000);
 
 async function shoot() {
     let data = await fetch(`${PROXY_URL}/shoot`)
@@ -64,22 +69,12 @@ async function shoot() {
     console.log("Took an image!")
 }
 
-
 async function downloadImage() {
     let data = await fetch(`${PROXY_URL}/showimages`);
     let formatJSON = await data.json();
 
     console.log(formatJSON);
 
-
-    // CALLS IMAGE STRING LOCATION DIRECTLY
-    // const urlOfRecentImage = await fetch(formatJSON.addedcontents)
-
-    // const blob = await urlOfRecentImage.blob()
-
-    // STORE BLOB IMAGE
-
-    // let localUrl = URL.createObjectURL(blob)
 
 
 }
