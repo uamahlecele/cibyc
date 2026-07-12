@@ -42,7 +42,7 @@ async function setup() {
 //     imgElement.src = localUrl
 
 
-//     // setTimeout(cameraLiveView, 2000)
+// setTimeout(cameraLiveView, 2000)
 
 
 //     // const formatToJSON = await dataFromAPI.json()

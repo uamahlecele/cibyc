@@ -9,7 +9,7 @@ const app = express()
 
 const CAMERA_IP = "http://192.168.1.2:8080";
 
-
+app.use(cors())
 
 app.listen(8080, () => {
     console.log('Running on port 8080')
@@ -18,31 +18,47 @@ app.listen(8080, () => {
     storeImagesLocally()
 })
 
-app.use(cors())
 
 app.use(express.json({ limit: '1mb' }))
 
 app.get('/connect', async (req, res) => {
-    const response = await fetch(`${CAMERA_IP}/ccapi`)
 
-    if (!response.ok) {
-        throw new Error("Could not connect to Camera");
-    } else {
+    try {
+        const response = await fetch(`${CAMERA_IP}/ccapi`)
+
+        if (!response.ok) {
+            throw new Error("Could not connect to Camera");
+        }
+
         res.send("Connection to Camera established! :)")
+
+
+    } catch (error) {
+        console.log("Could not connect to Camera", error.message);
+
     }
 
 })
 
-
 app.get('/showimages', async (req, res) => {
 
-    const data = await fetch(`${CAMERA_IP}/ccapi/ver100/contents/sd/103CANON?kind=list`);
-    const jsonF = await data.json();
+    try {
+        const data = await fetch(`${CAMERA_IP}/ccapi/ver100/contents/sd/103CANON?kind=list`);
 
-    res.json(jsonF);
+        if (!data.ok) {
+            throw new Error("list of images in directory failed");
+
+        }
+        const jsonF = await data.json();
+        res.json(jsonF);
+
+    } catch (error) {
+        res.send(error.message)
+    }
 
 
 })
+
 app.get('/deviceinfo', async (req, res) => {
 
     const data = await fetch(`${CAMERA_IP}/ccapi/ver100/deviceinformation`) // This downloads the resulting response in chunks, hence the await, until done
@@ -57,54 +73,78 @@ app.get('/deviceinfo', async (req, res) => {
 
 })
 
-
 app.get('/setup', async (req, res) => {
-    const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview`
-        , {
-            headers: { "Content-Type": "application/json" },
-            method: 'POST',
-            body: JSON.stringify({
-                "liveviewsize": "small",
-                "cameradisplay": "on"
-            }),
-        })
 
-    const formatData = await dataFromAPI.json()
+    try {
+        const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview`
+            , {
+                headers: { "Content-Type": "application/json" },
+                method: 'POST',
+                body: JSON.stringify({
+                    "liveviewsize": "small",
+                    "cameradisplay": "on"
+                }),
+            })
 
-    res.json(formatData)
+        if (!dataFromAPI.ok) {
+            throw new Error(`Camera setup failed`);
+        }
 
-    // if (!response.ok) {
-    //     return res.status(response.status).send("Failed to fetch live view frame from camera");
-    // } else {
+        const formatData = await dataFromAPI.json()
+        res.json(formatData)
 
-    // }
+    } catch (error) {
+        console.log("Failed to establish live view frame from camera ", error.message)
+    }
 
 })
 
 app.get('/liveview', async (req, res) => {
-    const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview/flip`)
 
-    const buffer = await dataFromAPI.arrayBuffer(); // An ArrayBuffer is essentially a fixed-length chunk of memory used to store raw binary data (just 1s and 0s).
-    //  It is the best way to handle non-text data like images, audio, or video files in JavaScript.
-    res.set('Content-Type', 'image/jpeg'); // .set() allows you to specify the header of the response object
-    res.set('Transfer-Encoding', 'chunked');
-    res.send(Buffer.from(buffer)); // creates a copy of the buffer object
+    try {
+        const dataFromAPI = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/liveview/flip`)
+
+        if (!dataFromAPI.ok) {
+            throw new Error(`Camera liveview failed`);
+        }
+
+        const buffer = await dataFromAPI.arrayBuffer(); // An ArrayBuffer is essentially a fixed-length chunk of memory used to store raw binary data (just 1s and 0s).
+        //  It is the best way to handle non-text data like images, audio, or video files in JavaScript.
+        res.set('Content-Type', 'image/jpeg'); // .set() allows you to specify the header of the response object
+        res.set('Transfer-Encoding', 'chunked');
+        res.send(Buffer.from(buffer)); // creates a copy of the buffer object
+
+    } catch (error) {
+        console.log("Error while showing live view: ", error.message);
+    }
 
 })
 
 app.get('/shoot', async (req, res) => {
-    const data = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/control/shutterbutton`, {
-        method: 'POST',
-        header: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            "af": true
-        })
-    })
 
-    res.send(data);
+    try {
+        const data = await fetch(`${CAMERA_IP}/ccapi/ver100/shooting/control/shutterbutton`, {
+            method: 'POST',
+            header: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                "af": true
+            })
+        })
+
+        res.send(data);
+
+    } catch (error) {
+        console.log("Error while trying to shoot: ", error.message);
+
+    }
+
 
 })
 
+/** This asynchronous function is incharge of listening
+ * for new changes when an image is taken
+ 
+ */
 async function storeImagesLocally() {
 
     try {
@@ -124,35 +164,15 @@ async function storeImagesLocally() {
 
             const arrayBuffer = await image.arrayBuffer()
             const buffer = Buffer.from(arrayBuffer)
-            fs.writeFileSync(`./images/${imageName.at(-1)}`, buffer)
+            fs.writeFileSync(`./images/${imageName.at(-1)}`, buffer); // creates unique identifier for file name
 
 
         }
     } catch (error) {
         console.error("Polling error: ", error.message);
 
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 3000)); // every three seconds the method calls the api again
     }
 
-    storeImagesLocally();
+    storeImagesLocally(); // recursively calls itself
 }
-
-// async function createlongPoll() {
-//     const data = await fetch(`${CAMERA_IP}/event/polling`)
-//     const responseJson = await data.json()
-
-//     if (responseJson.addedcontents) {
-
-//         const recentImageUrl = responseJson.addedcontents[0];
-//         const imageResponse = await fetch(recentImageUrl)
-
-//         const arrayBuffer = await imageResponse.arrayBuffer()
-//         const buffer = Buffer.from(arrayBuffer)
-//         fs.writeFileSync('./images/photo.jpg', buffer)
-
-
-//     }
-//     createlongPoll()
-// }
-
-// createlongPoll()
