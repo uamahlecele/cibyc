@@ -1,5 +1,5 @@
 const express = require('express')
-const fs = require('fs') // 
+const fs = require('fs')
 const http = require('http')
 
 // REMEMBER THIS FOR CORS
