@@ -2,7 +2,7 @@
 
 CIBYC is a FullStack web application built for WeThinkCode_'s Content Club. 
 
-It features a Node.js/Express backend that integrates with Canon's Camera Control API (CCAPI) to remotely trigger a camera shutter, stream a live viewfinder feed, and automatically save captured images to a local machine — all over a local Wi-Fi connection.
+It features a Node.js/Express backend that integrates with Canon's Camera Control API (CCAPI) to remotely trigger a camera shutter, stream a live viewfinder feed, and automatically save captured images to a local machine all over a local Wi-Fi connection.
 
 # Inspiration
 
@@ -23,7 +23,6 @@ It has been the most challenging yet rewarding project I've built so far.
 
 - Node.js
 - Express
-- Node fs module — writing images to disk
 
 **Camera API**
 
